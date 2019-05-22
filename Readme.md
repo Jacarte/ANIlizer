@@ -14,7 +14,7 @@ function a(){
 
 1. Execute ```node src/scripts/instrument_application.js <application_dir_abs> <instrumentation_output_abs>```
     
-    11. There is a map file (**map.json**) with the instrumented functions in the output folder root
+    11. There is a map file (**map.json**) with the instrumented functions in the output folder root (<a href="docs/map.md">Example</a>)
 2. Execute the application entrypoint with node **--inspect** option: ```node --inspect entry.js```
 3. Execute the listener who writes the logs to **logs/logs.txt** file: ```node src/core/listener/listener.js <instrumentation_output_path>/map.json```
 
