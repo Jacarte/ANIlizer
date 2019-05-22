@@ -44,8 +44,7 @@ class Instrumentor{
                 const hash = self.hashNode(path.node)
 
                 self.map[hash + ':' + filePath] = {
-                    name: path.node.id.name || 'anonymous',
-                    hitCount: 0
+                    name: path.node.id.name || 'anonymous'
                 }
 
                 body.unshiftContainer('body',

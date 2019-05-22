@@ -48,7 +48,7 @@ req(`http://localhost:${port}/json`,function (error, response, body) {
 
             // write log
 
-            fs.writeSync(logs, `${msg.params.timestamp} ${params[2].value} ${file}\n`)
+            fs.writeSync(logs, `${hash}:${file} ${msg.params.timestamp}\n`)
             
 
         }
