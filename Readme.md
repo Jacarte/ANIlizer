@@ -1,4 +1,4 @@
-# Almost No Instrusive Analizer for NodeJS application (ANIlizer)
+# Almost No Instrusive Analizer (ANIlizer)
 
 We try to instrument a complete NodeJS application (including node_modules folder recursivelly) getting the function entering traces. Basically we send the traces using the builtin function **console.debug**, these console api calls can be detected using debugger tools through the websocket channel. 
 
