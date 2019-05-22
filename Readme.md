@@ -17,3 +17,8 @@ function a(){
 2. Execute the application entrypoint with node **--inspect** option: ```node --inspect entry.js```
 3. Execute the listener who writes the logs to **logs/logs.txt** file
     31. The logs line by line is **[HASH]:[file_path] [TIMESTAMP]**
+
+
+### TODOS
+- Debloat based on traces information
+- Perform instrumentation to branch level
