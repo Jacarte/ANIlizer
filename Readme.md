@@ -13,9 +13,11 @@ function a(){
 ### Running the instrumented code
 
 1. Execute ```node src/scripts/instrument_application.js <application_dir_abs> <instrumentation_output_abs>```
+    
     11. There is a map file (**map.json**) with the instrumented functions in the output folder root
 2. Execute the application entrypoint with node **--inspect** option: ```node --inspect entry.js```
 3. Execute the listener who writes the logs to **logs/logs.txt** file
+
     31. The logs line by line is **[HASH]:[file_path] [TIMESTAMP]**
 
 
