@@ -20,6 +20,36 @@ class Instrumentor{
         ':' + path.loc.end.column
     }
 
+    processFunctionBody(filePath, path){
+        const body = path.get("body");
+
+        const hash = this.hashNode(path.node)
+
+        this.map[hash + ':' + filePath] = {
+            name: path.node.id ? path.node.id.name : 'anonymous'
+        }
+
+        body.unshiftContainer('body',
+            
+            types.callExpression(
+                types.identifier("console.debug"),
+                [
+                    /*types.objectExpression([
+                        types.objectProperty(types.stringLiteral("instrumentor"), types.booleanLiteral(true)),
+                        types.objectProperty(types.stringLiteral("msg"), types.stringLiteral("FUNCTION_ENTERING")),
+                        types.objectProperty(types.stringLiteral("hash"), types.stringLiteral(self.hashNode(path.node))),
+                        types.objectProperty(types.stringLiteral("functionName"), types.stringLiteral(path.node.id.name))
+                    ])*/
+                    types.stringLiteral("instrumentor"),
+                    types.stringLiteral("FUNCTION_ENTERING"),
+                    types.stringLiteral(path.node.id ? path.node.id.name : 'anonymous'),
+                    types.stringLiteral(hash),
+                    types.stringLiteral(filePath)
+                ]
+        ))
+
+    }
+
     instrummentCode(filePath){
         
         const content = fs.readFileSync(filePath);
@@ -37,37 +67,14 @@ class Instrumentor{
 
           const self = this;
 
-         traverse.default(ast, {
-            FunctionDeclaration: function(path){
-                const body = path.get("body");
-
-                const hash = self.hashNode(path.node)
-
-                self.map[hash + ':' + filePath] = {
-                    name: path.node.id.name || 'anonymous'
+            traverse.default(ast, {
+                FunctionDeclaration: function(path){
+                    self.processFunctionBody(filePath,path)
+                    //onsole.log(body)
+                },
+                FunctionExpression: function(path){
+                    self.processFunctionBody(filePath,path)
                 }
-
-                body.unshiftContainer('body',
-                    
-                    types.callExpression(
-                        types.identifier("console.debug"),
-                        [
-                            /*types.objectExpression([
-                                types.objectProperty(types.stringLiteral("instrumentor"), types.booleanLiteral(true)),
-                                types.objectProperty(types.stringLiteral("msg"), types.stringLiteral("FUNCTION_ENTERING")),
-                                types.objectProperty(types.stringLiteral("hash"), types.stringLiteral(self.hashNode(path.node))),
-                                types.objectProperty(types.stringLiteral("functionName"), types.stringLiteral(path.node.id.name))
-                            ])*/
-                            types.stringLiteral("instrumentor"),
-                            types.stringLiteral("FUNCTION_ENTERING"),
-                            types.stringLiteral(path.node.id.name || 'unknown'),
-                            types.stringLiteral(hash),
-                            types.stringLiteral(filePath)
-                        ]
-                ))
-
-                //onsole.log(body)
-            }
         })
 
         return generator.default(ast).code;
