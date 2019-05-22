@@ -1,5 +1,6 @@
 const fs = require("fs");
-
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
 
 class Walker{
     
@@ -7,11 +8,14 @@ class Walker{
         this.instrumentor = instrumentor;
         this.outDir = outDir;
         this.throwOnFail = throwOnFail;
+        this.index = 0;
     }
 
     walkAux(path, outPath, exclude){
         if(!fs.existsSync(outPath))
             fs.mkdirSync(outPath)
+        
+        
         
         const list = fs.readdirSync(path);
 
@@ -24,6 +28,8 @@ class Walker{
                     if(/.js$/.test(f) ){
                         const newCode = this.instrumentor.instrummentCode(path + '/' + f)
                         fs.writeFileSync(outPath + '/' + f, newCode);
+
+                        process.stdout.write(`\r${this.index++}/${this.total}`)
                     }
                     else{
                         fs.copyFileSync(path + '/' + f, outPath + '/' + f);
@@ -34,13 +40,30 @@ class Walker{
                 if(this.throwOnFail)
                     throw e;
 
-                console.log(e);
+                console.warn(e.message);
             }
         }
     }
 
-    walk(path, exclude = []){
+    async walk(path, exclude = []){
+        let total = 0;
+        try{
+            const command = `ls -lR ${path} | grep "\.js$" |  wc -l`;
+            console.log(command);
+
+            const { stdout, stderr } = await exec(command);
+            
+            total = parseInt(stdout);
+        }
+        catch(e){
+
+        }
+        console.log("Instrumenting", total, "files")
+        this.total = total;
+
         this.walkAux(path, this.outDir, exclude)
+
+        console.log("\nDONE")
     }
 }
 
