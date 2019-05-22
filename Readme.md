@@ -1,0 +1,19 @@
+# Almost No Instrusive Analizer (ANIlizer)
+
+We try to instrument a complete NodeJS application (including node_modules folder recursivelly) getting the function entering traces. Basically we send the traces using the builtin function **console.debug**, these console api calls can be detected using debugger tools through the websocket channel. 
+
+```js
+function a(){
+    console.debug("1:2:1:4", 'FUNCTION_ENTRANCE', 'a', 'file.js')
+
+    // Function code
+}
+```
+
+### Running the instrumented code
+
+1. Execute ```node src/scripts/instrument_application.js <application_dir_abs> <instrumentation_output_abs>```
+    11. There is a map file (**map.json**) with the instrumented functions in the output folder root
+2. Execute the application entrypoint with node **--inspect** option: ```node --inspect entry.js```
+3. Execute the listener who writes the logs to **logs/logs.txt** file
+    31. The logs line by line is **[HASH]:[file_path] [TIMESTAMP]**
