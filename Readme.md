@@ -5,7 +5,7 @@ We try to instrument a complete NodeJS application (including node_modules folde
 ```js
 function a(){
     console.debug("1:2:1:4", 'FUNCTION_ENTRANCE', 'a', 'file.js')
-    //             hash,     action,      functionName  filename    
+    //           node hash,     action,      functionName  filename    
     // Function code
 }
 ```
