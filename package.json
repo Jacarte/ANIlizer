@@ -1,0 +1,11 @@
+{
+  "name": "anilizer",
+  "version": "1.0.0",
+  "description": "Almost no intrusive js code analysis",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Javier Cabrera Arteaga",
+  "license": "ISC"
+}
