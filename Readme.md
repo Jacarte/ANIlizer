@@ -18,7 +18,7 @@ function a(){
 2. Execute the application entrypoint with node **--inspect** option: ```node --inspect entry.js```
 3. Execute the listener who writes the logs to **logs/logs.txt** file
 
-    31. The logs line by line format is **[HASH]:[file_path] [TIMESTAMP]**
+    31. The logs line by line format is **[HASH]:[file_path] [TIMESTAMP]** (<a href="docs/example.md">Example</a>)
 
 
 ### TODOS
