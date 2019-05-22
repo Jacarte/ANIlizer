@@ -9,7 +9,7 @@ class Walker{
         this.throwOnFail = throwOnFail;
     }
 
-    walkAux(path, outPath){
+    walkAux(path, outPath, exclude){
         if(!fs.existsSync(outPath))
             fs.mkdirSync(outPath)
         
@@ -21,7 +21,7 @@ class Walker{
                     this.walkAux(path + '/' + f, outPath + '/' +  f);
                 }
                 else{
-                    if(/.js$/.test(f)){
+                    if(/.js$/.test(f) ){
                         const newCode = this.instrumentor.instrummentCode(path + '/' + f)
                         fs.writeFileSync(outPath + '/' + f, newCode);
                     }
@@ -39,8 +39,8 @@ class Walker{
         }
     }
 
-    walk(path){
-        this.walkAux(path, this.outDir)
+    walk(path, exclude = []){
+        this.walkAux(path, this.outDir, exclude)
     }
 }
 
